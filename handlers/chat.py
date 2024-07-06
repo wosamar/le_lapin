@@ -2,7 +2,8 @@ import abc
 import traceback
 
 import requests
-from google.generativeai.types import GenerationConfigDict, ContentDict
+from google.generativeai.types import GenerationConfigDict, ContentDict, StopCandidateException
+from google.generativeai.types.safety_types import SafetySettingOptions, HarmCategory, HarmBlockThreshold
 
 from settings import Settings
 import google.generativeai as genai
@@ -11,7 +12,10 @@ settings = Settings()
 
 
 class ChatBot(abc.ABC):
-    error_message: str = "現在忙線中，嗶嗶"
+    error_message: str = None
+
+    def __init__(self, error_message):
+        self.error_message = error_message
 
     def gen_response(self, prompt: str):
         raise NotImplementedError("ChatBot must implement get_response.")
@@ -49,7 +53,8 @@ class GeminiChatBot(ChatBot):
     )
     chat_session = None
 
-    def __init__(self, prompt: str):
+    def __init__(self, prompt: str, **kwargs):
+        super(GeminiChatBot, self).__init__(**kwargs)
         self.chat_session = self.model.start_chat(
             history=[
                 ContentDict(parts=[{'text': prompt}], role="user")
@@ -59,13 +64,21 @@ class GeminiChatBot(ChatBot):
 
     def gen_response(self, prompt: str):
         try:
-            response = self.chat_session.send_message(prompt)
+            response = self.chat_session.send_message(
+                content=prompt,
+                safety_settings={
+                    HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT: HarmBlockThreshold.BLOCK_ONLY_HIGH,
+                }
+            )
             # for content in self.chat_session.history:
             #     part = content.parts[0]
             #     print(content.role, "->", type(part).to_dict(part))
             #     print('-' * 80)
 
             return response.text
+        except StopCandidateException as ex:
+            print(ex.__str__())
+            return "無法回答這個問題 > <"
         except Exception:
             print(traceback.format_exc())
             return self.error_message
