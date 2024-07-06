@@ -2,6 +2,10 @@ from discord.ext import commands
 from handlers.chat import GeminiChatBot
 
 
+# TODO:測試講幾句之後最初的 prompt 會不見
+# TODO:部屬至雲端
+# TODO:寫指令的說明
+
 class LapinAI(commands.Cog):
     prompt = "你是一名兔兔管家，請你對使用者的問題做出回答。\n" \
              "請使用**繁體中文**回答。\n" \
