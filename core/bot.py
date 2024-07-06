@@ -17,6 +17,13 @@ async def on_ready():
     print(f"目前登入身份 --> {bot.user}")
 
 
+# 重新載入所有Cog檔案
+@bot.command()
+async def reload_all(ctx):
+    await load_extensions()
+    await ctx.send("Reload all done.")
+
+
 # 載入指令程式檔案
 @bot.command()
 async def load(ctx, extension):
