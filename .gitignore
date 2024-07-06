@@ -1,1 +1,7 @@
+# dir
+./__pycache
+./.idea
+
+# file
 poetry.lock
+.env
