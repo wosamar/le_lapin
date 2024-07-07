@@ -26,21 +26,21 @@ async def reload_all(ctx):
 # 載入指令程式檔案
 @bot.command()
 async def load(ctx, extension):
-    await bot.load_extension(f"cogs.{extension}")
+    bot.load_extension(f"cogs.{extension}")
     await ctx.send(f"Loaded {extension} done.")
 
 
 # 卸載指令檔案
 @bot.command()
 async def unload(ctx, extension):
-    await bot.unload_extension(f"cogs.{extension}")
+    bot.unload_extension(f"cogs.{extension}")
     await ctx.send(f"UnLoaded {extension} done.")
 
 
 # 重新載入程式檔案
 @bot.command()
 async def reload(ctx, extension):
-    await bot.reload_extension(f"cogs.{extension}")
+    bot.reload_extension(f"cogs.{extension}")
     await ctx.send(f"ReLoaded {extension} done.")
 
 
@@ -49,7 +49,7 @@ async def load_extensions():
     path = BASE_PATH / "src" / "cogs"
     for filename in os.listdir(path):
         if filename.endswith(".py"):
-            await bot.load_extension(f"cogs.{filename[:-3]}")
+            bot.load_extension(f"cogs.{filename[:-3]}")
 
 
 async def start_bot():

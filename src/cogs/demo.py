@@ -1,7 +1,6 @@
 import discord
 from discord.ext import commands
 
-
 class Demo(commands.Cog):
 
     def __init__(self, bot):
@@ -20,5 +19,5 @@ class Demo(commands.Cog):
             await message.channel.send("Welcome to Lapin World!")
 
 
-async def setup(bot):
-    await bot.add_cog(Demo(bot))
+def setup(bot):
+    bot.add_cog(Demo(bot))
