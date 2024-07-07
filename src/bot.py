@@ -3,7 +3,7 @@ import asyncio
 import discord
 from discord.ext import commands
 
-from settings import Settings
+from settings import Settings, BASE_PATH
 
 settings = Settings()
 intents = discord.Intents.all()
@@ -46,16 +46,17 @@ async def reload(ctx, extension):
 
 # 一開始bot開機需載入全部程式檔案
 async def load_extensions():
-    for filename in os.listdir("cogs"):
+    path = BASE_PATH / "src" / "cogs"
+    for filename in os.listdir(path):
         if filename.endswith(".py"):
             await bot.load_extension(f"cogs.{filename[:-3]}")
 
 
-async def main():
+async def start_bot():
     async with bot:
         await load_extensions()
         await bot.start(settings.DISCORD_TOKEN)
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    asyncio.run(start_bot())

@@ -1,5 +1,5 @@
 from discord.ext import commands
-from handlers.chat import GeminiChatBot
+from src.handlers.chat import GeminiChatBot
 
 
 # TODO:測試講幾句之後最初的 prompt 會不見
